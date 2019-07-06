@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+          .city {
+            background: black;
+            height: 20px;
+            position: absolute;
+            width: 20px;
+            border-radius: 15px;
+            line-height: 60px;
+          }
+          .rome {
+            top: 310px;
+            left: 200px;
+          }
+          .thessalonica {
+            top: 290px;
+            left: 620px;
+          }
+          .berea {
+            top: 300px;
+            left: 560px;
+          }
+          .corinth {
+            top: 430px;
+            left: 650px;
+          }
+          .philippi {
+            top: 245px;
+            left: 675px;
+          }
+          .ephesus {
+            top: 370px;
+            left: 840px;
+          }
+          .cyprus{
+              top: 435px;
+              left: 1145px;
+          }
+          .ichonium {
+            top: 330px;
+            left: 1060px;
+          }
+          .antioch {
+            top: 370px;
+            left: 1260px;
+          }
+          .damascus {
+            top: 450px;
+            left: 1350px;
+          }
+          .jerusalem {
+            top: 550px;
+            left: 1330px;
+          }
+          .sidon {
+            top: 460px;
+            left: 1275px;
+          }
+          .caesarea {
+            top: 520px;
+            left: 1280px;
+          }
+          .colossae {
+            top: 380px;
+            left: 940px;
+          }
+          .philadelphia {
+            top: 330px;
+            left: 890px;
+          }
+          
+          .movement-marker {
+            height: 10px;
+            position: absolute;
+            width: 10px;
+            border-radius: 10px;
+            line-height: 60px;
+          }
+          .land-marker {
+              background-color: brown;
+          }
+          .jerusalem-damascus-0 {
+              top: 522px;
+              left: 1344px;
+          }
+          .jerusalem-damascus-1 {
+              top: 493px;
+              left: 1350px;
+          }
+          .jerusalem-damascus-route {
+            position: absolute;
+            top: 485px;
+            left: 1384px;
+          }
+    </style>
+</head>
+<body>
+    <h1>Acts of the Apostles</h1>
+    
+    <img id='gameMap' src='SimpleMap.png' alt='Game Map' style="width:1500px;height:720px;">
+    <div>
+      <figure class="city rome">Rome</figure>
+      <figure class="city thessalonica">Thessalonica</figure>
+      <figure class="city berea">Berea</figure>
+      <figure class="city corinth">Corinth</figure>
+      <figure class="city philippi">Philippi</figure>
+      <figure class="city ephesus">Ephesus</figure>
+      <figure class="city cyprus">Cyprus</figure>
+      <figure class="city ichonium">Ichonium</figure>
+      <figure class="city antioch">Antioch</figure>
+      <figure class="city damascus">Damascus</figure>
+      <figure class="city caesarea">Caesarea</figure>
+      <figure class="city jerusalem">Jerusalem</figure>
+      <figure class="city sidon">Sidon</figure>
+      <figure class="city colossae">Colossae</figure>
+      <figure class="city philadelphia">Philadeplipha</figure>
+      <figure class="movement-marker land-marker jerusalem-damascus-0"></figure>
+      <figure class="movement-marker land-marker jerusalem-damascus-1"></figure>
+      <svg class="jerusalem-damascus-route">
+            <line x1="15" y1="0" x2="0" y2="85" style="stroke:brown;stroke-width:2" />
+          </svg>
+    </div>
+    <script src="index.js">
+    </script>
+</body>
+</html>
