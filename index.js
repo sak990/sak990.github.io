@@ -214,12 +214,60 @@ function draw(){
 }
 
 function drawNode(node, connectsFromNode){
-  if(drawnNodes.has(node.element.id)) 
-  { return; }
 
   let styleElement = document.getElementById("styleDefinitions");
   let gameSpots = document.getElementById("gameSpots");
   
+  if(null != connectsFromNode)
+  {
+    const lineWidth = 2;
+    let x1 = node.location[1];
+    let x2 = connectsFromNode.location[1];
+    let y1 = node.location[0];
+    let y2 = connectsFromNode.location[0];
+    if(x1 > x2)
+    {
+      let temp = x2;
+      x2 = x1;
+      x1 = temp;
+    }
+    if(x2 - x1 < lineWidth)
+    {
+      x2 = x1 + lineWidth;
+    }
+    if(y1 > y2)
+    {
+      let temp = y2;
+      y2 = y1;
+      y1 = temp;
+    }
+    if(y2 - y1 < lineWidth)
+    {
+      y2 = y1 + lineWidth;
+    }
+
+    let routeArea = connectsFromNode.name + "-" + node.name + "-area";
+    let routeName = connectsFromNode.name + "-" + node.name + "-route";
+    let lineStyle = "." + routeArea + " { position: absolute; top: " + y1 + "px; left: " + x1 + "px; width: " + (x2 - x1) + "px; height: " + (y2 - y1) + "px; } \n." + routeName + " { position: absolute; top: 0px; left: 0px; width: " + (x2 - x1) + "px; height: " + (y2 - y1) + "px; } \n";
+    styleElement.innerText = styleElement.innerText + lineStyle;
+    
+    
+    lineElement = document.createElement("svg");
+    lineElement.className = routeArea;
+    lineInner = document.createElement("line");
+    lineInner.className =  routeName;
+    lineInner.id = "line" + routeName;
+    lineInner.setAttribute("x1", 0);
+    lineInner.setAttribute("y1", 0);
+    lineInner.setAttribute("x2", (x2 - x1) - lineWidth);
+    lineInner.setAttribute("y2", (y2 - y1) - lineWidth);
+    lineInner.style = "stroke: brown; stroke-width: " + lineWidth + ";";
+    lineElement.appendChild(lineInner);
+    gameSpots.appendChild(lineElement);
+  }
+  if(drawnNodes.has(node.element.id)) 
+  { return; }
+
   drawnNodes.add(node.element.id);
   gameSpots.appendChild(node.element);
   styleElement.innerText = styleElement.innerText + node.style;
