@@ -27,13 +27,22 @@
           .sea-marker {
               background-color: white;
           }
+          .player-marker {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+          }
+          .player-1{
+            border-bottom: 20px solid green;
+          }
     </style>
 </head>
 <body onload="initialLoad()">
     <h1>Acts of the Apostles</h1>
-    
     <img id='gameMap' src='ActsOfApostles/SimpleMap.png' alt='Game Map' style="width:1500px;height:720px;">
     <div id='gameSpots'>
+      <div id="player1" class="player-marker player-1"></div>
     </div>
     <script src="index.js">
     </script>

@@ -1,5 +1,9 @@
 
 
+function spotClicked(node) {
+  moveMarker(players[0], node)
+}
+
 class GameSpotNode {
   constructor(type, location, name, printTitle) {
     this.name = name;
@@ -14,12 +18,27 @@ class GameSpotNode {
     }
     this.element.className =  type + " " + name;
     this.element.id = "node" + name;
+    let _this = this;
+    this.element.addEventListener('click', function() { spotClicked(_this); });
 
     this.style = "." + name + " { top: " + location[0] + "px; left: " + location[1] + "px; } \n";
   }
 }
 
+class PlayerInfo {
+  constructor(id) {
+    this.id = id;
+    
+    let styleNode = document.getElementById("styleDefinitions");
+    let startPos = styleNode.innerText.indexOf("player-" + id);
+    let endPos = styleNode.innerText.indexOf("}", startPos);
+    this.style = styleNode.innerText.substr(startPos, endPos - startPos + 1);
+  }
+}
+
 const root = new GameSpotNode("city", [310, 200], "Rome", true);
+let players = [];
+let startPosition = null;
 
 function createGraph(){
   const rome = root;
@@ -37,6 +56,7 @@ function createGraph(){
   const caesarea = new GameSpotNode("city", [520, 1280], "Caesarea", true);
   const colossae = new GameSpotNode("city", [380, 940], "Colossae", true);
   const philadelphia = new GameSpotNode("city", [330, 890], "Philadelphia", true);
+  startPosition = jerusalem;
   
   const romePhilippi0 = new GameSpotNode("movement-marker land-marker", [270, 200], "RomePhilippi0");
   connectNodes(rome, romePhilippi0);
@@ -275,7 +295,20 @@ function drawNode(node, connectsFromNode){
   for(let child of node.connections) drawNode(child, node);
 }
 
+function moveMarker(player, location){
+  let styleNode = document.getElementById("styleDefinitions");
+  let newStyle = player.style.substr(0, player.style.length - 1) + "position: absolute; top: " + (location.location[0]) + "px; left: " + (location.location[1] + 40) + "px; }";
+  styleNode.innerText = styleNode.innerText.replace(player.style, newStyle);
+  player.style = newStyle;
+}
+
+function createMarkers(){
+  players.push(new PlayerInfo(1));
+  moveMarker(players[0], startPosition);
+}
+
 function initialLoad(){
   createGraph();
   draw();
+  createMarkers();
 }
