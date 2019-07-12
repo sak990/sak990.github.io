@@ -27,14 +27,46 @@
           .sea-marker {
               background-color: white;
           }
+          .player-marker {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+          }
+          .player-1{
+            border-bottom: 20px solid green;
+          }
+          .player-2{
+            border-bottom: 20px solid red;
+          }
+          .player-3{
+            border-bottom: 20px solid yellow;
+          }
+          .player-4{
+            border-bottom: 20px solid purple;
+          }
+          .player-5{
+            border-bottom: 20px solid blue;
+          }
+          .player-6{
+            border-bottom: 20px solid orange;
+          }
+          .player-7{
+            border-bottom: 20px solid salmon;
+          }
+          .player-8{
+            border-bottom: 20px solid lightseagreen;
+          }
     </style>
 </head>
 <body onload="initialLoad()">
     <h1>Acts of the Apostles</h1>
-    
+    <svg id='svgNode' style="position:absolute; top:20;left:46;width:1500px;height:720px;"></svg>
     <img id='gameMap' src='ActsOfApostles/SimpleMap.png' alt='Game Map' style="width:1500px;height:720px;">
-    <div id='gameSpots'>
-    </div>
+    <div id='gameSpots'></div>
+    <div id="currentPlayer">Current player: 1</div>
+    <div id="diceRoll">Current dice roll: </div>
+    <div id="seaTravel">Sea travel succeed: </div>
     <script src="index.js">
     </script>
 </body>
