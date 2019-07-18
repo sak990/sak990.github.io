@@ -25,11 +25,13 @@ class GameSpotNode {
 class PlayerInfo {
   constructor(id) {
     this.id = id;
+    this.score = 0;
     
     let styleNode = document.getElementById("styleDefinitions");
-    let startPos = styleNode.innerText.indexOf("player-" + id);
+    let startPos = styleNode.innerText.indexOf("player-" + id + "{");
     let endPos = styleNode.innerText.indexOf("}", startPos);
-    this.style = styleNode.innerText.substr(startPos, endPos - startPos + 1);
+    this.baseStyle = styleNode.innerText.substr(startPos, endPos - startPos + 1);
+    this.style = this.baseStyle;
     
     let playerNode = document.createElement("div");
     playerNode.id = "player" + id;
@@ -40,12 +42,35 @@ class PlayerInfo {
   }
 }
 
+class ChurchInfo{
+  constructor(player, city){
+    this.value = city.churchValue;
+    this.player = player.id - 1;
+    
+    let styleNode = document.getElementById("styleDefinitions");
+    
+    let newStyle = ".church-player-" + player.id + city.name + "{ position: absolute; top: " + (city.location[0] + 15) + "px; left: " + (city.location[1] + 45 + (player.id * 5)) + "px; }";
+    styleNode.innerText = styleNode.innerText + newStyle;
+    this.style = newStyle;
+
+    let churchMarker = document.createElement("div");
+    churchMarker.id = "churchPlayer" + player.id + city.name;
+    churchMarker.className = "church-marker player-" + player.id + "-church church-player-" + player.id + city.name;
+    churchMarker.innerText = city.churchValue;
+    document.getElementById("gameSpots").appendChild(churchMarker);
+    
+    this.id = churchMarker.id;
+  }
+}
+
 const root = new GameSpotNode("city", [310, 200], "Rome", 6);
 let players = [];
 let startPosition = null;
 let currentPlayer = 0;
 let diceRoll = 0;
 let currentSet = null;
+let activeChurches = new Set();
+let currentRound = 1;
 
 function spotClicked(node) {
 
@@ -62,7 +87,7 @@ function spotClicked(node) {
     moveMarker(players[currentPlayer], node);
 
     if(isCity(node)){
-      plantChurch();
+      plantChurch(players[currentPlayer], node);
     }
   }
 
@@ -86,8 +111,37 @@ function checkForSeaTravel(){
 }
 
 function updatePlayer(){
-  currentPlayer = (currentPlayer + 1) % players.length;
+  currentPlayer = (currentPlayer + 1);
+  if(0 == currentPlayer % players.length)
+  {
+    startNewRound();
+  }
+  currentPlayer = currentPlayer % players.length;
   document.getElementById("currentPlayer").innerText = "Current player: " + (currentPlayer + 1);
+}
+
+function startNewRound(){
+  updateScore();
+  currentRound++;
+  document.getElementById("currentRound").innerText = "Current round: " + currentRound;
+}
+
+function updateScore(){
+  for(let church of activeChurches)
+  {
+    players[church.player].score += church.value;
+    church.value--;
+    if(0 == church.value)
+    {
+      let churchElement = document.getElementById(church.id)
+      churchElement.parentNode.removeChild(churchElement);
+      activeChurches.delete(church);
+    }
+    else
+    {
+      document.getElementById(church.id).innerText = church.value;
+    }
+  }
 }
 
 function rollDice() {
@@ -119,8 +173,8 @@ function canMove(node, depth){
   return false;
 }
 
-function plantChurch(){
-
+function plantChurch(player, city){
+  activeChurches.add(new ChurchInfo(player, city));
 }
 
 function createGraph(){
@@ -250,7 +304,7 @@ function drawNode(node){
 
 function moveMarker(player, location){
   let styleNode = document.getElementById("styleDefinitions");
-  let newStyle = player.style.substr(0, player.style.length - 1) + "position: absolute; top: " + (location.location[0]) + "px; left: " + (location.location[1] + 40) + "px; }";
+  let newStyle = player.baseStyle.substr(0, player.baseStyle.length - 1) + "position: absolute; top: " + (location.location[0]) + "px; left: " + (location.location[1] + 40) + "px; }";
   styleNode.innerText = styleNode.innerText.replace(player.style, newStyle);
   player.style = newStyle;
   player.gameSpot = location;
